@@ -41,7 +41,7 @@ func Listcategory(parentId, pageSize, pageNum int) ([]*Category, int64, error) {
 
 func Viewcategory(id int32) (*Category, error) {
 	row := new(Category)
-	if err := global.DB.Table("categories").Where("id = ?", id).First(&row).Error; err != nil {
+	if err := global.DB.Table("categories").Where("parent_id = ?", id).First(&row).Error; err != nil {
 		return nil, err
 	}
 	return row, nil
