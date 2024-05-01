@@ -38,9 +38,10 @@ func DeleteCategory(ctx *gin.Context) {
 func ListCategory(ctx *gin.Context) {
 	json := make(map[string]interface{})
 	_ = ctx.BindJSON(&json)
+	upId := ioput.ParamToInt(json["upId"])
 	pageSize := ioput.ParamToInt(json["pageSize"])
 	pageNum := ioput.ParamToInt(json["pageNum"])
-	list, total, err := models.Listcategory(pageSize, pageNum)
+	list, total, err := models.Listcategory(upId, pageSize, pageNum)
 
 	if err != nil {
 		ioput.ReturnErrorResponse(ctx, 9999, "系统错误~")

@@ -19,21 +19,21 @@ type Category struct {
 }
 
 func Createcategory(parentId int32, categoryName, icon, pic, brief string) error {
-	return global.DB.Table("categorys").Select("parent_id", "category_name", "icon", "pic", "brief").
+	return global.DB.Table("categories").Select("parent_id", "category_name", "icon", "pic", "brief").
 		Create(&Category{ParentId: parentId, CategoryName: categoryName, Icon: icon, Pic: pic, Brief: brief}).Error
 }
 
 func Deletecategory(id int32) error {
-	return global.DB.Table("categorys").Where("id = ?", id).Delete(&Category{}).Error
+	return global.DB.Table("categories").Where("id = ?", id).Delete(&Category{}).Error
 }
 
-func Listcategory(pageSize, pageNum int) ([]*Category, int64, error) {
+func Listcategory(upId, pageSize, pageNum int) ([]*Category, int64, error) {
 	var rows []*Category
 	//计算列表数量
 	var count int64
-	global.DB.Table("categorys").Count(&count)
+	global.DB.Table("categories").Count(&count)
 
-	if err := global.DB.Table("categorys").Order("id desc").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&rows).Error; err != nil {
+	if err := global.DB.Table("categories").Where("upid = ?", upId).Order("seq desc").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&rows).Error; err != nil {
 		return nil, 0, err
 	}
 	return rows, count, nil
@@ -41,7 +41,7 @@ func Listcategory(pageSize, pageNum int) ([]*Category, int64, error) {
 
 func Viewcategory(id int32) (*Category, error) {
 	row := new(Category)
-	if err := global.DB.Table("categorys").Where("id = ?", id).First(&row).Error; err != nil {
+	if err := global.DB.Table("categories").Where("id = ?", id).First(&row).Error; err != nil {
 		return nil, err
 	}
 	return row, nil
