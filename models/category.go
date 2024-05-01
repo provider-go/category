@@ -31,7 +31,7 @@ func ListCategory(parentId, pageSize, pageNum int) ([]*Category, int64, error) {
 	var rows []*Category
 	//计算列表数量
 	var count int64
-	global.DB.Table("categories").Count(&count)
+	global.DB.Table("categories").Where("parent_id = ?", parentId).Count(&count)
 
 	if err := global.DB.Table("categories").Where("parent_id = ?", parentId).Order("seq desc").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&rows).Error; err != nil {
 		return nil, 0, err
