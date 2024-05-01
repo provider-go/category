@@ -27,13 +27,13 @@ func Deletecategory(id int32) error {
 	return global.DB.Table("categories").Where("id = ?", id).Delete(&Category{}).Error
 }
 
-func Listcategory(upId, pageSize, pageNum int) ([]*Category, int64, error) {
+func Listcategory(parentId, pageSize, pageNum int) ([]*Category, int64, error) {
 	var rows []*Category
 	//计算列表数量
 	var count int64
 	global.DB.Table("categories").Count(&count)
 
-	if err := global.DB.Table("categories").Where("upid = ?", upId).Order("seq desc").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&rows).Error; err != nil {
+	if err := global.DB.Table("categories").Where("parent_id = ?", parentId).Order("seq desc").Limit(pageSize).Offset((pageNum - 1) * pageSize).Find(&rows).Error; err != nil {
 		return nil, 0, err
 	}
 	return rows, count, nil
