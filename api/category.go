@@ -15,7 +15,7 @@ func CreateCategory(ctx *gin.Context) {
 	icon := ioput.ParamToString(json["icon"])
 	pic := ioput.ParamToString(json["pic"])
 	brief := ioput.ParamToString(json["brief"])
-	err := models.Createcategory(parentId, categoryName, icon, pic, brief)
+	err := models.CreateCategory(parentId, categoryName, icon, pic, brief)
 	if err != nil {
 		ioput.ReturnErrorResponse(ctx, 9999, "系统错误~")
 	} else {
@@ -27,7 +27,7 @@ func DeleteCategory(ctx *gin.Context) {
 	json := make(map[string]interface{})
 	_ = ctx.BindJSON(&json)
 	id := ioput.ParamToInt32(json["id"])
-	err := models.Deletecategory(id)
+	err := models.DeleteCategory(id)
 	if err != nil {
 		ioput.ReturnErrorResponse(ctx, 9999, "系统错误~")
 	} else {
@@ -41,7 +41,7 @@ func ListCategory(ctx *gin.Context) {
 	parentId := ioput.ParamToInt(json["parentId"])
 	pageSize := ioput.ParamToInt(json["pageSize"])
 	pageNum := ioput.ParamToInt(json["pageNum"])
-	list, total, err := models.Listcategory(parentId, pageSize, pageNum)
+	list, total, err := models.ListCategory(parentId, pageSize, pageNum)
 
 	if err != nil {
 		ioput.ReturnErrorResponse(ctx, 9999, "系统错误~")
@@ -57,7 +57,7 @@ func ViewCategory(ctx *gin.Context) {
 	json := make(map[string]interface{})
 	_ = ctx.BindJSON(&json)
 	id := ioput.ParamToInt32(json["id"])
-	row, err := models.Viewcategory(id)
+	row, err := models.ViewCategory(id)
 	if err != nil {
 		ioput.ReturnErrorResponse(ctx, 9999, "系统错误~")
 	} else {

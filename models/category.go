@@ -18,16 +18,16 @@ type Category struct {
 	UpdateTime   time.Time `json:"update_time" gorm:"autoCreateTime;comment:更新时间"`
 }
 
-func Createcategory(parentId int32, categoryName, icon, pic, brief string) error {
+func CreateCategory(parentId int32, categoryName, icon, pic, brief string) error {
 	return global.DB.Table("categories").Select("parent_id", "category_name", "icon", "pic", "brief").
 		Create(&Category{ParentId: parentId, CategoryName: categoryName, Icon: icon, Pic: pic, Brief: brief}).Error
 }
 
-func Deletecategory(id int32) error {
+func DeleteCategory(id int32) error {
 	return global.DB.Table("categories").Where("id = ?", id).Delete(&Category{}).Error
 }
 
-func Listcategory(parentId, pageSize, pageNum int) ([]*Category, int64, error) {
+func ListCategory(parentId, pageSize, pageNum int) ([]*Category, int64, error) {
 	var rows []*Category
 	//计算列表数量
 	var count int64
@@ -39,9 +39,9 @@ func Listcategory(parentId, pageSize, pageNum int) ([]*Category, int64, error) {
 	return rows, count, nil
 }
 
-func Viewcategory(id int32) (*Category, error) {
+func ViewCategory(id int32) (*Category, error) {
 	row := new(Category)
-	if err := global.DB.Table("categories").Where("parent_id = ?", id).First(&row).Error; err != nil {
+	if err := global.DB.Table("categories").Where("id = ?", id).First(&row).Error; err != nil {
 		return nil, err
 	}
 	return row, nil
